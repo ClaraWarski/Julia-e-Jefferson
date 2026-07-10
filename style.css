@@ -149,8 +149,8 @@ h1, h2, h3{ font-family: 'Cormorant Garamond', serif; font-weight: 300; }
 
 .wc-3d-scene{
   overflow: hidden;
-  perspective: 32em;
-  padding: 40px 0 20px;
+  perspective: 42em;
+  padding: 60px 0 40px;
   /* esmaece as bordas laterais, pra nao cortar seco */
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 18% 82%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 18% 82%, transparent);
@@ -159,13 +159,17 @@ h1, h2, h3{ font-family: 'Cormorant Garamond', serif; font-weight: 300; }
 .wc-3d-carousel{
   place-self: center;
   transform-style: preserve-3d;
-  animation: wc-carousel-spin 34s linear infinite;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
 }
+
+.wc-3d-carousel.dragging{ cursor: grabbing; }
 
 @keyframes wc-carousel-spin{ to{ rotate: y 1turn; } }
 
 .wc-3d-carousel .card{
-  --w: 210px;
+  --w: 280px;
   grid-area: 1 / 1;
   width: var(--w);
   aspect-ratio: 3/4;
@@ -175,19 +179,56 @@ h1, h2, h3{ font-family: 'Cormorant Garamond', serif; font-weight: 300; }
   box-shadow: 0 12px 30px rgba(28,25,23,0.18);
   backface-visibility: hidden;
   background: linear-gradient(160deg, var(--dourado-claro), var(--creme));
+  cursor: pointer;
+  transition: box-shadow .25s ease;
   --ba: calc(1turn / var(--n, 1));
   transform:
     rotateY(calc(var(--i, 0) * var(--ba)))
     translateZ(calc(-1 * (0.5 * var(--w) + 0.5em) / tan(0.5 * var(--ba))));
 }
 
-@media (prefers-reduced-motion: reduce){
-  .wc-3d-carousel{ animation-duration: 130s; }
+.wc-3d-carousel .card:hover{ box-shadow: 0 16px 36px rgba(201,169,110,0.35); }
+
+/* ---------- LIGHTBOX ---------- */
+.wc-lightbox{
+  position: fixed;
+  inset: 0;
+  background: rgba(28,25,23,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+
+.wc-lightbox.is-open{ opacity: 1; pointer-events: auto; }
+
+.wc-lightbox img{
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.wc-lightbox-close{
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
 }
 
 @media (max-width: 600px){
-  .wc-3d-carousel .card{ --w: 150px; }
-  .wc-3d-scene{ perspective: 24em; }
+  .wc-3d-carousel .card{ --w: 190px; }
+  .wc-3d-scene{ perspective: 30em; padding: 40px 0 20px; }
 }
 
 /* ---------- PRESENTES ---------- */
